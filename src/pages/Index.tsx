@@ -1,9 +1,10 @@
-import { CakeSlice, ArrowRight } from "lucide-react";
+import { CakeSlice, ArrowRight, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/use-cart";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const produitsVedettes = [
   {
@@ -32,6 +33,7 @@ const produitsVedettes = [
 const Index = () => {
   const { addItem } = useCart();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleAddToCart = (product: typeof produitsVedettes[0]) => {
     addItem({
@@ -45,6 +47,10 @@ const Index = () => {
       title: "Ajouté au panier",
       description: `${product.name} a été ajouté à votre panier.`,
     });
+  };
+
+  const handleReservation = (product: typeof produitsVedettes[0]) => {
+    navigate("/reservations", { state: { product } });
   };
 
   return (
@@ -91,18 +97,27 @@ const Index = () => {
                 <p className="text-muted-foreground mb-4">
                   {product.description}
                 </p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
                   <span className="text-lg font-semibold">
                     {product.price.toFixed(2)} €
                   </span>
-                  <Button
-                    onClick={() => handleAddToCart(product)}
-                    size="sm"
-                    className="flex items-center"
-                  >
-                    <CakeSlice className="mr-2 h-4 w-4" />
-                    Ajouter au panier
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => handleAddToCart(product)}
+                      size="sm"
+                      variant="secondary"
+                    >
+                      <CakeSlice className="mr-2 h-4 w-4" />
+                      Ajouter au panier
+                    </Button>
+                    <Button
+                      onClick={() => handleReservation(product)}
+                      size="sm"
+                    >
+                      <Calendar className="mr-2 h-4 w-4" />
+                      Réserver
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
